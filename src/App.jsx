@@ -1,9 +1,9 @@
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
 
   return (
     <main>
-      <h1>hola mundo</h1>
+      <h1>Hola mundo</h1>
     </main>
   )
 }
