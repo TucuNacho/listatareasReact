@@ -1,9 +1,13 @@
-const ItemTarea = () => {
-    return (
-        <div>
+import { Button, ListGroup } from "react-bootstrap";
 
-        </div>
-    );
+const ItemTarea = () => {
+  return (
+    <div>
+      <ListGroup.Item className="d-flex justify-content-between">
+        Tarea 1 <Button variant="danger">Borrar</Button>{" "}
+      </ListGroup.Item>
+    </div>
+  );
 };
 
 export default ItemTarea;
