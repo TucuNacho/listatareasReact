@@ -12,8 +12,13 @@ const FormularioTarea = () => {
     e.preventDefault();
     console.log("aqui deberia guardar la tarea");
     //tomar la tarea que esta en el state de tareas y guardar en el state tareas (array)
-    setTareas([...tareas, tarea])
-    setTarea('')
+    setTareas([...tareas, tarea]);
+    setTarea("");
+  };
+
+  const borrarTarea = (nombretarea) => {
+    const tareasFiltradas= tareas.filter((item)=> item !== nombretarea)
+    setTareas(tareasFiltradas)
   };
   return (
     <section>
@@ -30,7 +35,7 @@ const FormularioTarea = () => {
           </Button>
         </Form.Group>
       </Form>
-      <ListaTareas tareas={tareas} ></ListaTareas>
+      <ListaTareas tareas={tareas} borrarTarea={borrarTarea}></ListaTareas>
     </section>
   );
 };
