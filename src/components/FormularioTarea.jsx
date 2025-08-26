@@ -39,7 +39,6 @@ const FormularioTarea = () => {
           <Form.Control
             type="text"
             placeholder="Ingresa una tarea"
-            onChange={(e) => setTareas(e.target.value)}
             {...register('inputTarea', {
               required:'La tarea es un dato obligatorio',
               minLength:{
