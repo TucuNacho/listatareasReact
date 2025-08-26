@@ -1,34 +1,23 @@
 import ListGroup from "react-bootstrap/ListGroup";
 import ItemTarea from "./ItemTarea";
-import { leerTarea } from "../helpers/queries";
-import { useEffect, useState } from "react";
-const ListaTareas = ({ borrarTarea }) => {
-  const [listaTareas, setListaTareas] = useState([]);
+const ListaTareas = ({ borrarTarea, tareas }) => {
+  console.log("Tareas completas:", JSON.stringify(tareas, null, 2)); // 👈 Esto mostrará la estructura completa
 
-  useEffect(() => {
-    obtenerTarea();
-  }, []);
-
-  const obtenerTarea = async () => {
-    const respuesta = await leerTarea();
-    if (respuesta.status === 200) {
-      const datos = await respuesta.json();
-      console.log("Datos recibidos:", datos)
-      setListaTareas(datos);
-    } else {
-      console.info("Error al leer la tarea");
-    }
-  };
   return (
-      <ListGroup>
-        {listaTareas.map((item) => (
+    <ListGroup>
+      {tareas.map((item) => {
+        console.log("Renderizando item:", item); // 👈 Y esto también
+        console.log("nombretarea será:", item.inputTarea); // 👈 Y esto
+        return (
           <ItemTarea
             key={item._id}
+            id={item._id}
             nombretarea={item.inputTarea}
             borrarTarea={borrarTarea}
-          ></ItemTarea>
-        ))}
-      </ListGroup>
+          />
+        );
+      })}
+    </ListGroup>
   );
 };
 

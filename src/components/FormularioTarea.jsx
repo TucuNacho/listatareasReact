@@ -1,12 +1,13 @@
 import { useForm } from "react-hook-form";
 import { Form, Button } from "react-bootstrap";
 import ListaTareas from "./ListaTareas";
+import { crearTarea, leerTarea, borrarTareas } from "../helpers/queries";
 import { useState, useEffect } from "react";
 
 const FormularioTarea = () => {
-  const tareaLocalStorage =
-    JSON.parse(localStorage.getItem("ListaTareas")) || [];
-  const [tareas, setTareas] = useState(tareaLocalStorage);
+  // const tareaLocalStorage =
+  //   JSON.parse(localStorage.getItem("ListaTareas")) || [];
+  const [tareas, setTareas] = useState([]);
   const {
     register,
     handleSubmit,
@@ -15,22 +16,31 @@ const FormularioTarea = () => {
   } = useForm();
 
   useEffect(() => {
-    console.log("desde useEffect");
-    localStorage.setItem("ListaTareas", JSON.stringify(tareas));
-  }, [tareas]);
+    const tareas = async () => {
+      const respuesta = await leerTarea();
+      const datos = await respuesta.json();
+      setTareas(datos);
+    };
+    tareas();
+  }, []);
 
-  const agregarTareas = (data) => {
-    console.log("aqui deberia guardar la tarea");
-    console.log(data.inputTarea);
-
+  const agregarTareas = async (data) => {
     //tomar la tarea que esta en el state de tareas y guardar en el state tareas (array)
-    setTareas([...tareas, data.inputTarea]);
-    reset()
+
+    const respuesta = await crearTarea(data);
+    const resultado = await respuesta.json();
+    if (respuesta.status === 201) {
+      setTareas([...tareas, resultado]);
+      reset();
+    }
   };
 
-  const borrarTarea = (nombretarea) => {
-    const tareasFiltradas = tareas.filter((item) => item !== nombretarea);
-    setTareas(tareasFiltradas);
+  const borrarTarea = async (id) => {
+    const respuesta = await borrarTareas(id);
+    if (respuesta.status === 200) {
+      const tareasFiltradas = tareas.filter((item) => item._id !== id);
+      setTareas(tareasFiltradas);
+    }
   };
   return (
     <section>
@@ -39,23 +49,26 @@ const FormularioTarea = () => {
           <Form.Control
             type="text"
             placeholder="Ingresa una tarea"
-            {...register('inputTarea', {
-              required:'La tarea es un dato obligatorio',
-              minLength:{
-                value:3,
-                message: 'la tarea debe contener al menos 3 caracteres'
+            {...register("inputTarea", {
+              required: "La tarea es un dato obligatorio",
+              minLength: {
+                value: 3,
+                message: "la tarea debe contener al menos 3 caracteres",
               },
-              maxLength:{
-                value:50,
-                message:'la tarea solo debe contener 50 caracteres como maximo'
-              }
+              maxLength: {
+                value: 50,
+                message:
+                  "la tarea solo debe contener 50 caracteres como maximo",
+              },
             })}
           />
           <Button type="submit" variant="info">
             Enviar
           </Button>
         </Form.Group>
-        <Form.Text className="text-danger">{errors.inputTarea?.message}</Form.Text>
+        <Form.Text className="text-danger">
+          {errors.inputTarea?.message}
+        </Form.Text>
       </Form>
       <ListaTareas tareas={tareas} borrarTarea={borrarTarea}></ListaTareas>
     </section>
