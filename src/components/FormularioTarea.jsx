@@ -64,7 +64,7 @@ const FormularioTarea = () => {
               },
             })}
           />
-          <Button type="submit" variant="info">
+          <Button type="submit" variant="info" className="ms-3">
             Enviar
           </Button>
         </Form.Group>

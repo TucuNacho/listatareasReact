@@ -6,6 +6,8 @@ const ItemTarea = ({borrarTarea, tarea ,setTareas}) => {
     <div>
       <ListGroup.Item className="d-flex justify-content-between">
         {tarea.inputTarea}{" "}
+        <div>
+
         <Button variant="danger" onClick={() => borrarTarea(tarea._id)}>
           🗑️
         </Button>{" "}
@@ -55,6 +57,8 @@ const ItemTarea = ({borrarTarea, tarea ,setTareas}) => {
       >
         📝
       </Button>
+        </div>
+
       </ListGroup.Item>
 
     </div>
