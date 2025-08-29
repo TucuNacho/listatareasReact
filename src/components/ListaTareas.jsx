@@ -1,6 +1,6 @@
 import ListGroup from "react-bootstrap/ListGroup";
 import ItemTarea from "./ItemTarea";
-const ListaTareas = ({ borrarTarea, tareas }) => {
+const ListaTareas = ({ borrarTarea, tareas, setTareas, tarea }) => {
   console.log("Tareas completas:", JSON.stringify(tareas, null, 2)); // 👈 Esto mostrará la estructura completa
 
   return (
@@ -14,6 +14,8 @@ const ListaTareas = ({ borrarTarea, tareas }) => {
             id={item._id}
             nombretarea={item.inputTarea}
             borrarTarea={borrarTarea}
+            setTareas={setTareas}
+            Tareas={tarea}
           />
         );
       })}

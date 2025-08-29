@@ -4,10 +4,9 @@ import ListaTareas from "./ListaTareas";
 import { crearTarea, leerTarea, borrarTareas } from "../helpers/queries";
 import { useState, useEffect } from "react";
 
-const FormularioTarea = () => {
-  // const tareaLocalStorage =
-  //   JSON.parse(localStorage.getItem("ListaTareas")) || [];
+const FormularioTarea = ({ tarea, setTarea, titulo }) => {
   const [tareas, setTareas] = useState([]);
+
   const {
     register,
     handleSubmit,
@@ -23,10 +22,7 @@ const FormularioTarea = () => {
     };
     tareas();
   }, []);
-
   const agregarTareas = async (data) => {
-    //tomar la tarea que esta en el state de tareas y guardar en el state tareas (array)
-
     const respuesta = await crearTarea(data);
     const resultado = await respuesta.json();
     if (respuesta.status === 201) {
@@ -34,7 +30,6 @@ const FormularioTarea = () => {
       reset();
     }
   };
-
   const borrarTarea = async (id) => {
     const respuesta = await borrarTareas(id);
     if (respuesta.status === 200) {
@@ -44,6 +39,7 @@ const FormularioTarea = () => {
   };
   return (
     <section>
+      <h2> {titulo} </h2>
       <Form onSubmit={handleSubmit(agregarTareas)}>
         <Form.Group className="mb-3 d-flex">
           <Form.Control
@@ -70,7 +66,12 @@ const FormularioTarea = () => {
           {errors.inputTarea?.message}
         </Form.Text>
       </Form>
-      <ListaTareas tareas={tareas} borrarTarea={borrarTarea}></ListaTareas>
+      <ListaTareas
+        tareas={tareas}
+        borrarTarea={borrarTarea}
+        setTarea={setTarea}
+        tarea={tarea}
+      ></ListaTareas>
     </section>
   );
 };
