@@ -54,7 +54,7 @@ export const editarTarea = async (tareaEditada, id) => {
   }
 };
 
-export const obtenerProductoPorId = async (id)=>{
+export const obtenerTareaPorId = async (id)=>{
     try {
         const respuesta = await fetch(url + `/${id}`)
         return respuesta

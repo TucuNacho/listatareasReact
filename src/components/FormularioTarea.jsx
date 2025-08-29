@@ -4,7 +4,7 @@ import ListaTareas from "./ListaTareas";
 import { crearTarea, leerTarea, borrarTareas } from "../helpers/queries";
 import { useState, useEffect } from "react";
 
-const FormularioTarea = ({ tarea, setTarea, titulo }) => {
+const FormularioTarea = () => {
   const [tareas, setTareas] = useState([]);
 
   const {
@@ -22,11 +22,15 @@ const FormularioTarea = ({ tarea, setTarea, titulo }) => {
     };
     tareas();
   }, []);
+  const actualizarTarea= async () => {
+    const respuesta = await leerTarea()
+    const datos = await respuesta.json()
+    setTareas(datos)
+  }
   const agregarTareas = async (data) => {
     const respuesta = await crearTarea(data);
-    const resultado = await respuesta.json();
     if (respuesta.status === 201) {
-      setTareas([...tareas, resultado]);
+      await actualizarTarea()
       reset();
     }
   };
@@ -35,11 +39,13 @@ const FormularioTarea = ({ tarea, setTarea, titulo }) => {
     if (respuesta.status === 200) {
       const tareasFiltradas = tareas.filter((item) => item._id !== id);
       setTareas(tareasFiltradas);
+      await actualizarTarea()
     }
   };
+
+
   return (
     <section>
-      <h2> {titulo} </h2>
       <Form onSubmit={handleSubmit(agregarTareas)}>
         <Form.Group className="mb-3 d-flex">
           <Form.Control
@@ -69,8 +75,7 @@ const FormularioTarea = ({ tarea, setTarea, titulo }) => {
       <ListaTareas
         tareas={tareas}
         borrarTarea={borrarTarea}
-        setTarea={setTarea}
-        tarea={tarea}
+        setTarea={setTareas}
       ></ListaTareas>
     </section>
   );
