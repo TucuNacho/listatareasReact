@@ -22,15 +22,15 @@ const FormularioTarea = () => {
     };
     tareas();
   }, []);
-  const actualizarTarea= async () => {
-    const respuesta = await leerTarea()
-    const datos = await respuesta.json()
-    setTareas(datos)
-  }
+  const actualizarTarea = async () => {
+    const respuesta = await leerTarea();
+    const datos = await respuesta.json();
+    setTareas(datos);
+  };
   const agregarTareas = async (data) => {
     const respuesta = await crearTarea(data);
     if (respuesta.status === 201) {
-      await actualizarTarea()
+      await actualizarTarea();
       reset();
     }
   };
@@ -39,44 +39,47 @@ const FormularioTarea = () => {
     if (respuesta.status === 200) {
       const tareasFiltradas = tareas.filter((item) => item._id !== id);
       setTareas(tareasFiltradas);
-      await actualizarTarea()
+      await actualizarTarea();
     }
   };
 
-
   return (
-    <section>
-      <Form onSubmit={handleSubmit(agregarTareas)}>
-        <Form.Group className="mb-3 d-flex">
-          <Form.Control
-            type="text"
-            placeholder="Ingresa una tarea"
-            {...register("inputTarea", {
-              required: "La tarea es un dato obligatorio",
-              minLength: {
-                value: 3,
-                message: "la tarea debe contener al menos 3 caracteres",
-              },
-              maxLength: {
-                value: 50,
-                message:
-                  "la tarea solo debe contener 50 caracteres como maximo",
-              },
-            })}
-          />
-          <Button type="submit" variant="info" className="ms-3">
-            Enviar
-          </Button>
-        </Form.Group>
-        <Form.Text className="text-danger">
-          {errors.inputTarea?.message}
-        </Form.Text>
-      </Form>
-      <ListaTareas
-        tareas={tareas}
-        borrarTarea={borrarTarea}
-        setTarea={setTareas}
-      ></ListaTareas>
+    <section className="todo-container">
+      <div className="todo-card">
+        <h1 className="todo-title">Mis tareas</h1>
+        <Form onSubmit={handleSubmit(agregarTareas)}>
+          <Form.Group className="mb-3 d-flex ">
+            <Form.Control
+              type="text"
+              placeholder="Ingresa una tarea"
+              className="form-control-colorful"
+              {...register("inputTarea", {
+                required: "La tarea es un dato obligatorio",
+                minLength: {
+                  value: 3,
+                  message: "la tarea debe contener al menos 3 caracteres",
+                },
+                maxLength: {
+                  value: 50,
+                  message:
+                    "la tarea solo debe contener 50 caracteres como maximo",
+                },
+              })}
+            />
+            <Button type="submit" className="btn-submit-colorful ms-3">
+              Enviar
+            </Button>
+          </Form.Group>
+          <Form.Text className="text-danger fw-bold">
+            {errors.inputTarea?.message}
+          </Form.Text>
+        </Form>
+        <ListaTareas
+          tareas={tareas}
+          borrarTarea={borrarTarea}
+          setTarea={setTareas}
+        ></ListaTareas>
+      </div>
     </section>
   );
 };
